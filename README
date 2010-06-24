@@ -1,0 +1,25 @@
+iOS
+===
+
+o Introduction
+o More information
+o Usage
+
+Introduction
+------------
+iOS is a simple mobile webapp that shows your location on a UK Ordinance Survey
+1:50,000 map.
+
+Usage
+-----
+To see the app in action, you need to be in the United Kingdom as it uses the UK OS
+OpenSpace API to display the map. You also need a phone that supports the Geolocation API.
+Once you're in the UK, point your mobile browser to:
+http://codebrane.com/ios
+Before you can host the app on your own website, you need to get an API key from the OS. Just add it
+to index.html and away you go.
+
+More information
+----------------
+http://codebrane.com/blog
+http://openspace.ordnancesurvey.co.uk/openspace/index.html

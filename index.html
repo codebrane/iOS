@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>iOS</title>
+	<meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name="viewport"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-touch-fullscreen" content="yes" />
+	<script type="text/javascript"
+					src="http://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=API_KEY">
+	</script>
+</head>
+<body onorientationchange="orientationChange()" onload="getLocationAndOrientation()">
+<script type="text/javascript">
+	function getLocationAndOrientation() {
+		setTimeout(function() { window.scrollTo(0, 1) }, 0);
+		orientationChange();
+		navigator.geolocation.getCurrentPosition(locationHandler,
+																						 locationErrorHandler,
+																						 {enableHighAccuracy:true});
+		
+	}
+	
+	function orientationChange() {
+		var mapDiv = document.getElementById("map");
+		// Portrait
+		if (window.orientation == 0) {
+			mapDiv.style.width = 320+'px';
+			mapDiv.style.height = 300+'px';
+		}
+		// Landscape
+		if (window.orientation == 90) {
+			mapDiv.style.width = 480+'px';
+			mapDiv.style.height = 300+'px';
+		}
+	}
+	
+	function locationHandler(location) {
+		var osMap = new OpenSpace.Map('map');
+		var lonlat = new OpenLayers.LonLat(location.coords.longitude, location.coords.latitude);
+		var gridProjection = new OpenSpace.GridProjection();
+		var gridRef = gridProjection.getMapPointFromLonLat(lonlat);
+
+		osMap.setCenter(new OpenSpace.MapPoint(gridRef.getEasting(), gridRef.getNorthing()), 7);
+		var markers = new OpenLayers.Layer.Markers("Markers");
+		osMap.addLayer(markers);
+
+		var marker = new OpenLayers.Marker(gridRef);
+		markers.addMarker(marker);
+		
+		var message = document.getElementById("gridRef");
+		message.innerHTML = gridRef.getEasting() + " " + gridRef.getNorthing() + "<br />";
+		message.innerHTML += location.coords.latitude + " " + location.coords.longitude + "<br />";
+		message.innerHTML += "Accuracy : " + location.coords.accuracy;
+	}
+	
+	function locationErrorHandler(error) {
+		var message = document.getElementById("gridRef");
+		message.innerHTML = "Location error:<br />";
+		message.innerHTML += error.code + "<br />";
+		message.innerHTML += error.message;
+	}
+</script>
+
+<div id="map" style="width: 320px; height: 300px; border: 1px solid black;"></div>
+<br />
+<div id="gridRef"></div>
+</body>
+</html>
