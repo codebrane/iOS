@@ -7,8 +7,9 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-touch-fullscreen" content="yes" />
 	<script type="text/javascript"
-					src="http://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=API_KEY">
+					src="http://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=8988E39AE87A9AC0E0405F0AC8604B24">
 	</script>
+	<script type="text/javascript" src="LatLngToOSGB.js"></script>
 </head>
 <body onorientationchange="orientationChange()" onload="getLocationAndOrientation()">
 <script type="text/javascript">
@@ -49,9 +50,14 @@
 		markers.addMarker(marker);
 		
 		var message = document.getElementById("gridRef");
+		/*
 		message.innerHTML = gridRef.getEasting() + " " + gridRef.getNorthing() + "<br />";
 		message.innerHTML += location.coords.latitude + " " + location.coords.longitude + "<br />";
 		message.innerHTML += "Accuracy : " + location.coords.accuracy;
+		*/
+		
+		var ngr = NE2NGR(gridRef.getEasting(), gridRef.getNorthing());
+		message.innerHTML = ngr;
 	}
 	
 	function locationErrorHandler(error) {
